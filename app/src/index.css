@@ -1,0 +1,295 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* StudBlud - Stoic Black & White Theme */
+    --background: 0 0% 100%;
+    --foreground: 0 0% 0%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 0%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 0%;
+    --primary: 0 0% 0%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 0 0% 96%;
+    --secondary-foreground: 0 0% 0%;
+    --muted: 0 0% 96%;
+    --muted-foreground: 0 0% 45%;
+    --accent: 0 0% 96%;
+    --accent-foreground: 0 0% 0%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 90%;
+    --input: 0 0% 90%;
+    --ring: 0 0% 0%;
+    --radius: 0.5rem;
+    
+    /* AI Accent Colors */
+    --ai-rose: #DE3163;
+    --ai-mint: #AFE1AF;
+    --ai-sage: #9FE2BF;
+    
+    /* Sidebar */
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 0 0% 0%;
+    --sidebar-primary: 0 0% 0%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 0 0% 96%;
+    --sidebar-accent-foreground: 0 0% 0%;
+    --sidebar-border: 0 0% 90%;
+    --sidebar-ring: 0 0% 0%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  
+  html {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    @apply bg-white text-black antialiased;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+}
+
+/* Typography */
+.font-display {
+  font-family: 'Inter', sans-serif;
+}
+
+/* Welcome Title - 96px Semi-bold */
+.welcome-title {
+  font-family: 'Inter', sans-serif;
+  font-size: 96px;
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+/* AI Gradient Colors */
+.ai-gradient-rose {
+  background: linear-gradient(135deg, #DE3163 0%, #ff6b9d 100%);
+}
+
+.ai-gradient-mint {
+  background: linear-gradient(135deg, #AFE1AF 0%, #9FE2BF 100%);
+}
+
+.ai-gradient-sage {
+  background: linear-gradient(135deg, #9FE2BF 0%, #7dd3c0 100%);
+}
+
+.ai-text-rose {
+  color: #DE3163;
+}
+
+.ai-text-mint {
+  color: #AFE1AF;
+}
+
+.ai-text-sage {
+  color: #9FE2BF;
+}
+
+.ai-border-rose {
+  border-color: #DE3163;
+}
+
+.ai-border-mint {
+  border-color: #AFE1AF;
+}
+
+.ai-border-sage {
+  border-color: #9FE2BF;
+}
+
+.ai-bg-rose {
+  background-color: #DE3163;
+}
+
+.ai-bg-mint {
+  background-color: #AFE1AF;
+}
+
+.ai-bg-sage {
+  background-color: #9FE2BF;
+}
+
+/* Artistic Card Styles for Workspace Creation */
+.artistic-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 16px;
+}
+
+.artistic-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, 
+    rgba(222, 49, 99, 0.1) 0%, 
+    rgba(175, 225, 175, 0.1) 50%, 
+    rgba(159, 226, 191, 0.1) 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.artistic-card:hover::before {
+  opacity: 1;
+}
+
+/* Noise texture overlay */
+.noise-overlay {
+  position: relative;
+}
+
+.noise-overlay::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  opacity: 0.03;
+  pointer-events: none;
+}
+
+/* Dot pattern */
+.dot-pattern {
+  background-image: radial-gradient(circle, #DE3163 2px, transparent 2px);
+  background-size: 20px 20px;
+}
+
+/* Speckle pattern */
+.speckle-pattern {
+  background-image: 
+    radial-gradient(circle at 20% 30%, #AFE1AF 1px, transparent 1px),
+    radial-gradient(circle at 60% 70%, #9FE2BF 1px, transparent 1px),
+    radial-gradient(circle at 80% 20%, #DE3163 1px, transparent 1px);
+  background-size: 40px 40px, 60px 60px, 50px 50px;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #000;
+  border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #333;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse-soft {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.5s ease-out;
+}
+
+/* Button Styles - Stoic */
+.btn-stoic {
+  @apply px-6 py-3 bg-black text-white font-medium transition-all duration-200;
+}
+
+.btn-stoic:hover {
+  @apply bg-neutral-800;
+}
+
+.btn-stoic-outline {
+  @apply px-6 py-3 border border-black text-black font-medium transition-all duration-200;
+}
+
+.btn-stoic-outline:hover {
+  @apply bg-black text-white;
+}
+
+/* Card Styles */
+.card-stoic {
+  @apply bg-white border border-neutral-200 rounded-lg;
+}
+
+.card-stoic:hover {
+  @apply border-neutral-400;
+}
+
+/* Input Styles */
+.input-stoic {
+  @apply border border-neutral-300 rounded-lg px-4 py-3 focus:outline-none focus:border-black transition-colors;
+}
+
+/* Navigation */
+.nav-item {
+  @apply px-4 py-2 text-sm font-medium text-neutral-600 hover:text-black transition-colors;
+}
+
+.nav-item-active {
+  @apply text-black;
+}
+
+/* Whiteboard Canvas */
+.canvas-container {
+  cursor: crosshair;
+}
+
+.canvas-container.panning {
+  cursor: grab;
+}
+
+/* FullCalendar Customization */
+.fc {
+  font-family: 'Inter', sans-serif !important;
+}
+
+.fc .fc-button {
+  @apply bg-black text-white border-none rounded-md px-4 py-2 text-sm font-medium;
+}
+
+.fc .fc-button:hover {
+  @apply bg-neutral-800;
+}
+
+.fc .fc-button-primary:not(:disabled).fc-button-active,
+.fc .fc-button-primary:not(:disabled):active {
+  @apply bg-neutral-700;
+}
+
+.fc .fc-daygrid-day.fc-day-today {
+  background: rgba(0, 0, 0, 0.05) !important;
+}
+
+.fc .fc-event {
+  @apply rounded-md border-none text-xs font-medium;
+}
