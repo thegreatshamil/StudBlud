@@ -8,11 +8,11 @@ import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { 
-  ArrowRight, 
-  ArrowLeft, 
-  Bot, 
-  Copy, 
+import {
+  ArrowRight,
+  ArrowLeft,
+  Bot,
+  Copy,
   Check
 } from 'lucide-react';
 import type { Workspace, AIConfig, WorkspaceColor } from '@/types';
@@ -48,21 +48,21 @@ const aiPersonalities = [
 export function CreateWorkspaceModal({ isOpen, onClose, onSuccess }: CreateWorkspaceModalProps) {
   const { state } = useStore();
   const { peers } = state;
-  
+
   const [step, setStep] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
-  
+
   // Step 1 fields
   const [name, setName] = useState('');
   const [subject, setSubject] = useState('');
   const [description, setDescription] = useState('');
   const [selectedColor, setSelectedColor] = useState<WorkspaceColor>('rose');
-  
+
   // Step 2 fields
   const [aiName, setAiName] = useState('');
   const [aiEnabled, setAiEnabled] = useState(true);
   const [aiPersonality, setAiPersonality] = useState<AIConfig['personality']>('friendly');
-  
+
   // Step 3 fields
   const [selectedPeers, setSelectedPeers] = useState<string[]>([]);
   const [inviteLink, setInviteLink] = useState('');
@@ -102,13 +102,13 @@ export function CreateWorkspaceModal({ isOpen, onClose, onSuccess }: CreateWorks
 
   const handleSubmit = async () => {
     setIsLoading(true);
-    
+
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 1000));
-    
+
     const workspaceId = generateId('ws');
     const shareableLink = `https://studblud.app/w/${workspaceId}`;
-    
+
     const newWorkspace: Workspace = {
       id: workspaceId,
       name,
@@ -144,7 +144,7 @@ export function CreateWorkspaceModal({ isOpen, onClose, onSuccess }: CreateWorks
       lastActive: new Date(),
       shareableLink,
     };
-    
+
     setIsLoading(false);
     onSuccess(newWorkspace);
     handleClose();
@@ -167,7 +167,8 @@ export function CreateWorkspaceModal({ isOpen, onClose, onSuccess }: CreateWorks
   const canProceed = () => {
     switch (step) {
       case 1:
-        return name.trim() && subject;
+        return Boolean(name.trim()) && Boolean(subject);
+
       case 2:
         return true;
       case 3:
@@ -179,12 +180,13 @@ export function CreateWorkspaceModal({ isOpen, onClose, onSuccess }: CreateWorks
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="max-w-lg max-h-[90vh] overflow-hidden p-0 border-none">
+      <DialogContent className="max-w-lg h-[90vh] flex flex-col p-0 border-none">
+
         {/* Artistic Header */}
         <div className="relative overflow-hidden">
           <div className="absolute inset-0 speckle-pattern opacity-30" />
           <div className="absolute inset-0 bg-gradient-to-br from-[#DE3163]/10 via-[#AFE1AF]/10 to-[#9FE2BF]/10" />
-          
+
           <DialogHeader className="relative p-6 pb-4">
             <div className="flex items-center justify-between mb-4">
               <button
@@ -195,7 +197,7 @@ export function CreateWorkspaceModal({ isOpen, onClose, onSuccess }: CreateWorks
               </button>
               <div className="flex-1 mx-4">
                 <div className="h-1 bg-neutral-200 rounded-full overflow-hidden">
-                  <div 
+                  <div
                     className="h-full bg-[#DE3163] transition-all duration-300"
                     style={{ width: `${(step / totalSteps) * 100}%` }}
                   />
@@ -212,6 +214,7 @@ export function CreateWorkspaceModal({ isOpen, onClose, onSuccess }: CreateWorks
         </div>
 
         <ScrollArea className="max-h-[60vh]">
+
           <div className="p-6 pt-2">
             {step === 1 && (
               <div className="space-y-6">
@@ -233,11 +236,10 @@ export function CreateWorkspaceModal({ isOpen, onClose, onSuccess }: CreateWorks
                       <button
                         key={subj}
                         onClick={() => setSubject(subj)}
-                        className={`px-3 py-1.5 text-sm rounded-full border transition-colors ${
-                          subject === subj
-                            ? 'bg-black text-white border-black'
-                            : 'bg-white text-neutral-600 border-neutral-200 hover:border-black'
-                        }`}
+                        className={`px-3 py-1.5 text-sm rounded-full border transition-colors ${subject === subj
+                          ? 'bg-black text-white border-black'
+                          : 'bg-white text-neutral-600 border-neutral-200 hover:border-black'
+                          }`}
                       >
                         {subj}
                       </button>
@@ -264,11 +266,10 @@ export function CreateWorkspaceModal({ isOpen, onClose, onSuccess }: CreateWorks
                       <button
                         key={color.color}
                         onClick={() => setSelectedColor(color.color)}
-                        className={`w-12 h-12 rounded-full ${color.class} transition-transform ${
-                          selectedColor === color.color
-                            ? 'ring-2 ring-offset-2 ring-black scale-110'
-                            : 'hover:scale-105'
-                        }`}
+                        className={`w-12 h-12 rounded-full ${color.class} transition-transform ${selectedColor === color.color
+                          ? 'ring-2 ring-offset-2 ring-black scale-110'
+                          : 'hover:scale-105'
+                          }`}
                         title={color.label}
                       />
                     ))}
@@ -320,11 +321,10 @@ export function CreateWorkspaceModal({ isOpen, onClose, onSuccess }: CreateWorks
                         <button
                           key={personality.id}
                           onClick={() => setAiPersonality(personality.id)}
-                          className={`p-3 rounded-lg border text-left transition-colors ${
-                            aiPersonality === personality.id
-                              ? 'border-[#DE3163] bg-[#DE3163]/5'
-                              : 'border-neutral-200 hover:border-[#DE3163]/50'
-                          }`}
+                          className={`p-3 rounded-lg border text-left transition-colors ${aiPersonality === personality.id
+                            ? 'border-[#DE3163] bg-[#DE3163]/5'
+                            : 'border-neutral-200 hover:border-[#DE3163]/50'
+                            }`}
                         >
                           <p className="font-medium text-sm">{personality.label}</p>
                           <p className="text-xs text-neutral-500">{personality.description}</p>
@@ -350,11 +350,10 @@ export function CreateWorkspaceModal({ isOpen, onClose, onSuccess }: CreateWorks
                         <div
                           key={peer.id}
                           onClick={() => togglePeer(peer.id)}
-                          className={`flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-colors ${
-                            selectedPeers.includes(peer.id)
-                              ? 'border-[#DE3163] bg-[#DE3163]/5'
-                              : 'border-neutral-200 hover:border-[#DE3163]/50'
-                          }`}
+                          className={`flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-colors ${selectedPeers.includes(peer.id)
+                            ? 'border-[#DE3163] bg-[#DE3163]/5'
+                            : 'border-neutral-200 hover:border-[#DE3163]/50'
+                            }`}
                         >
                           <Checkbox checked={selectedPeers.includes(peer.id)} />
                           <Avatar className="w-8 h-8">

@@ -30,7 +30,7 @@ function AppContent() {
         dispatch({ type: 'SET_USER', payload: JSON.parse(savedUser) });
       }
       dispatch({ type: 'SET_AUTHENTICATED', payload: true });
-      
+
       const hasOnboarded = localStorage.getItem('studblud_onboarded') === 'true';
       setCurrentPage(hasOnboarded ? 'home' : 'onboarding');
     }
@@ -113,23 +113,23 @@ function AppContent() {
     switch (currentPage) {
       case 'login':
         return (
-          <LoginPage 
-            onLogin={handleLogin} 
-            onNavigateToRegister={() => navigate('register')} 
+          <LoginPage
+            onLogin={handleLogin}
+            onNavigateToRegister={() => navigate('register')}
           />
         );
       case 'register':
         return (
-          <RegisterPage 
-            onRegister={handleRegister} 
-            onNavigateToLogin={() => navigate('login')} 
+          <RegisterPage
+            onRegister={handleRegister}
+            onNavigateToLogin={() => navigate('login')}
           />
         );
       case 'onboarding':
         return <OnboardingPage onComplete={handleOnboardingComplete} />;
       case 'home':
         return (
-          <HomePage 
+          <HomePage
             onNavigate={navigate}
             onWorkspaceSelect={handleWorkspaceSelect}
             onLogout={handleLogout}
@@ -137,28 +137,28 @@ function AppContent() {
         );
       case 'calendar':
         return (
-          <CalendarPage 
+          <CalendarPage
             onNavigate={navigate}
             onLogout={handleLogout}
           />
         );
       case 'peers':
         return (
-          <PeersPage 
+          <PeersPage
             onNavigate={navigate}
             onLogout={handleLogout}
           />
         );
       case 'account':
         return (
-          <AccountPage 
+          <AccountPage
             onNavigate={navigate}
             onLogout={handleLogout}
           />
         );
       case 'workspace':
         return (
-          <WorkspacePage 
+          <WorkspacePage
             onBack={handleBackToHome}
           />
         );
@@ -170,9 +170,9 @@ function AppContent() {
   return (
     <div className="min-h-screen bg-background">
       {renderPage()}
-      
+
       {/* Global Modals */}
-      <CreateWorkspaceModal 
+      <CreateWorkspaceModal
         isOpen={state.modals.createWorkspace}
         onClose={() => dispatch({ type: 'TOGGLE_MODAL', payload: { modal: 'createWorkspace', open: false } })}
         onSuccess={(workspace) => {
@@ -181,7 +181,7 @@ function AppContent() {
           handleWorkspaceSelect(workspace.id);
         }}
       />
-      
+
       <CreateEventModal
         isOpen={state.modals.createEvent}
         onClose={() => dispatch({ type: 'TOGGLE_MODAL', payload: { modal: 'createEvent', open: false } })}
@@ -190,12 +190,12 @@ function AppContent() {
           dispatch({ type: 'TOGGLE_MODAL', payload: { modal: 'createEvent', open: false } });
         }}
       />
-      
+
       <PremiumUpsellModal
         isOpen={state.modals.premiumUpsell}
         onClose={() => dispatch({ type: 'TOGGLE_MODAL', payload: { modal: 'premiumUpsell', open: false } })}
       />
-      
+
       <Toaster position="top-right" richColors />
     </div>
   );

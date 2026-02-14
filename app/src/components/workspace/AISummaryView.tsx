@@ -5,13 +5,13 @@ import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { 
-  FileText, 
-  Type, 
-  Sparkles, 
-  Loader2, 
-  Copy, 
-  Save, 
+import {
+  FileText,
+  Type,
+  Sparkles,
+  Loader2,
+  Copy,
+  Save,
   BookOpen,
   HelpCircle,
   Send,
@@ -36,7 +36,7 @@ interface DoubtQa {
 export function AISummaryView() {
   const { state } = useStore();
   const { currentWorkspace } = state;
-  
+
   const [activeTab, setActiveTab] = useState('topic');
   const [topic, setTopic] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
@@ -50,30 +50,34 @@ export function AISummaryView() {
 
   const handleGenerateSummary = async () => {
     if (!topic.trim()) return;
-    
+
     setIsGenerating(true);
-    
+
     // Call Gemini API
-    const summaryResult = await generateSummary(topic);
-    
-    setResult(summaryResult);
+    const summaryText = await generateSummary(topic);
+
+    setResult({
+      summary: summaryText,
+      keyPoints: []
+    });
+
     setIsGenerating(false);
   };
 
   const handleAskDoubt = async () => {
     if (!doubtQuestion.trim()) return;
-    
+
     setIsAnswering(true);
-    
+
     // Call Gemini API
     const answer = await answerDoubt(topic || 'this topic', doubtQuestion);
-    
+
     const newQa: DoubtQa = {
       id: generateId('qa'),
       question: doubtQuestion,
       answer: answer,
     };
-    
+
     setDoubtHistory([...doubtHistory, newQa]);
     setDoubtQuestion('');
     setIsAnswering(false);
@@ -116,15 +120,19 @@ export function AISummaryView() {
 
   const handleFileUpload = async () => {
     if (!uploadedFile) return;
-    
+
     setIsGenerating(true);
-    
+
     // Read file content and generate summary based on filename
     // In a real app, you'd extract text from the PDF
     const fileTopic = uploadedFile.name.replace(/\.pdf$/i, '');
-    const summaryResult = await generateSummary(fileTopic);
-    
-    setResult(summaryResult);
+    const summaryText = await generateSummary(fileTopic);
+
+    setResult({
+      summary: summaryText,
+      keyPoints: []
+    });
+
     setIsGenerating(false);
     setUploadedFile(null);
   };
@@ -213,11 +221,10 @@ export function AISummaryView() {
                       onDragLeave={handleDragLeave}
                       onDrop={handleDrop}
                       onClick={() => fileInputRef.current?.click()}
-                      className={`text-center py-8 border-2 border-dashed rounded-lg cursor-pointer transition-colors ${
-                        isDragging 
-                          ? 'border-black bg-neutral-50' 
-                          : 'border-neutral-300 hover:border-neutral-400'
-                      }`}
+                      className={`text-center py-8 border-2 border-dashed rounded-lg cursor-pointer transition-colors ${isDragging
+                        ? 'border-black bg-neutral-50'
+                        : 'border-neutral-300 hover:border-neutral-400'
+                        }`}
                     >
                       <input
                         ref={fileInputRef}
@@ -307,7 +314,7 @@ export function AISummaryView() {
                     </Button>
                   </div>
                 </div>
-                
+
                 <div className="prose prose-neutral max-w-none">
                   <div className="whitespace-pre-wrap text-neutral-700">
                     {result.summary}

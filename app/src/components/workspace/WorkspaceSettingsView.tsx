@@ -7,12 +7,12 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { 
-  Settings, 
-  Users, 
-  Bot, 
-  Trash2, 
-  LogOut, 
+import {
+  Settings,
+  Users,
+  Bot,
+  Trash2,
+  LogOut,
   MoreVertical,
   Save,
   AlertTriangle,
@@ -41,7 +41,7 @@ const aiPersonalities = [
 export function WorkspaceSettingsView() {
   const { state, dispatch } = useStore();
   const { currentWorkspace, currentUser } = state;
-  
+
   const [name, setName] = useState(currentWorkspace?.name || '');
   const [description, setDescription] = useState(currentWorkspace?.description || '');
   const [selectedColor, setSelectedColor] = useState<WorkspaceColor>(currentWorkspace?.color || 'gray');
@@ -56,10 +56,10 @@ export function WorkspaceSettingsView() {
 
   const handleSaveGeneral = async () => {
     if (!currentWorkspace) return;
-    
+
     setIsSaving(true);
     await new Promise(resolve => setTimeout(resolve, 500));
-    
+
     dispatch({
       type: 'UPDATE_WORKSPACE',
       payload: {
@@ -70,7 +70,7 @@ export function WorkspaceSettingsView() {
         thumbnail: thumbnailType === 'color' ? undefined : thumbnail,
       },
     });
-    
+
     setIsSaving(false);
   };
 
@@ -101,10 +101,10 @@ export function WorkspaceSettingsView() {
 
   const handleSaveAI = async () => {
     if (!currentWorkspace) return;
-    
+
     setIsSaving(true);
     await new Promise(resolve => setTimeout(resolve, 500));
-    
+
     dispatch({
       type: 'UPDATE_AI_CONFIG',
       payload: {
@@ -112,7 +112,10 @@ export function WorkspaceSettingsView() {
         config: aiConfig,
       },
     });
-    
+
+    // ✅ Persist AI name for global access (chatbot & summarizer)
+    localStorage.setItem('studblud_ai_name', aiConfig.name);
+
     setIsSaving(false);
   };
 
@@ -168,7 +171,7 @@ export function WorkspaceSettingsView() {
             <TabsContent value="general" className="space-y-6">
               <Card className="p-6 border-gray-200">
                 <h3 className="font-semibold text-gray-900 mb-4">General Information</h3>
-                
+
                 <div className="space-y-4">
                   <div className="space-y-2">
                     <Label htmlFor="workspace-name">Workspace Name</Label>
@@ -199,11 +202,10 @@ export function WorkspaceSettingsView() {
                           key={color.color}
                           onClick={() => isOwner && setSelectedColor(color.color)}
                           disabled={!isOwner}
-                          className={`w-10 h-10 rounded-full ${color.class} transition-transform ${
-                            selectedColor === color.color
+                          className={`w-10 h-10 rounded-full ${color.class} transition-transform ${selectedColor === color.color
                               ? 'ring-2 ring-offset-2 ring-gray-400 scale-110'
                               : 'hover:scale-105'
-                          } ${!isOwner ? 'opacity-50 cursor-not-allowed' : ''}`}
+                            } ${!isOwner ? 'opacity-50 cursor-not-allowed' : ''}`}
                           title={color.label}
                         />
                       ))}
@@ -218,11 +220,10 @@ export function WorkspaceSettingsView() {
                       <button
                         onClick={() => setThumbnailType('color')}
                         disabled={!isOwner}
-                        className={`p-4 rounded-lg border-2 transition-all ${
-                          thumbnailType === 'color'
+                        className={`p-4 rounded-lg border-2 transition-all ${thumbnailType === 'color'
                             ? 'border-black bg-gray-50'
                             : 'border-gray-200 hover:border-gray-300'
-                        } ${!isOwner ? 'opacity-50 cursor-not-allowed' : ''}`}
+                          } ${!isOwner ? 'opacity-50 cursor-not-allowed' : ''}`}
                       >
                         <Palette className="w-6 h-6 mx-auto mb-2 text-gray-600" />
                         <p className="text-xs text-center">Solid Color</p>
@@ -232,11 +233,10 @@ export function WorkspaceSettingsView() {
                       <button
                         onClick={setWhiteboardThumbnail}
                         disabled={!isOwner}
-                        className={`p-4 rounded-lg border-2 transition-all ${
-                          thumbnailType === 'whiteboard'
+                        className={`p-4 rounded-lg border-2 transition-all ${thumbnailType === 'whiteboard'
                             ? 'border-black bg-gray-50'
                             : 'border-gray-200 hover:border-gray-300'
-                        } ${!isOwner ? 'opacity-50 cursor-not-allowed' : ''}`}
+                          } ${!isOwner ? 'opacity-50 cursor-not-allowed' : ''}`}
                       >
                         <div className="w-6 h-6 mx-auto mb-2 border-2 border-dashed border-gray-400 rounded" />
                         <p className="text-xs text-center">Whiteboard</p>
@@ -246,11 +246,10 @@ export function WorkspaceSettingsView() {
                       <button
                         onClick={() => fileInputRef.current?.click()}
                         disabled={!isOwner}
-                        className={`p-4 rounded-lg border-2 transition-all ${
-                          thumbnailType === 'custom'
+                        className={`p-4 rounded-lg border-2 transition-all ${thumbnailType === 'custom'
                             ? 'border-black bg-gray-50'
                             : 'border-gray-200 hover:border-gray-300'
-                        } ${!isOwner ? 'opacity-50 cursor-not-allowed' : ''}`}
+                          } ${!isOwner ? 'opacity-50 cursor-not-allowed' : ''}`}
                       >
                         <Image className="w-6 h-6 mx-auto mb-2 text-gray-600" />
                         <p className="text-xs text-center">Custom Image</p>
@@ -352,7 +351,7 @@ export function WorkspaceSettingsView() {
                           <p className="text-sm text-gray-500 capitalize">{member.role}</p>
                         </div>
                       </div>
-                      
+
                       {isOwner && member.userId !== currentUser?.id && (
                         <button className="p-2 hover:bg-gray-200 rounded-lg">
                           <MoreVertical className="w-4 h-4 text-gray-400" />
@@ -419,11 +418,10 @@ export function WorkspaceSettingsView() {
                             key={personality.id}
                             onClick={() => isOwner && setAiConfig({ ...aiConfig, personality: personality.id })}
                             disabled={!isOwner}
-                            className={`p-3 rounded-lg border text-left transition-colors ${
-                              aiConfig.personality === personality.id
+                            className={`p-3 rounded-lg border text-left transition-colors ${aiConfig.personality === personality.id
                                 ? 'border-[#DE3163] bg-rose-50'
                                 : 'border-gray-200 hover:border-[#DE3163]/50'
-                            } ${!isOwner ? 'opacity-50 cursor-not-allowed' : ''}`}
+                              } ${!isOwner ? 'opacity-50 cursor-not-allowed' : ''}`}
                           >
                             <p className="font-medium text-sm">{personality.label}</p>
                             <p className="text-xs text-gray-500">{personality.description}</p>
